@@ -45,13 +45,16 @@ function App() {
       setGuessHistory([...guessHistory, userInput])
 
       if (userInput === targetWord) {
-        alert("CORRECT CORRECT CORRECT!!!")
+        alert("CORRECT CORRECT CORRECT!!!");
+        // !!!! show scoreboard
+        // !!!! play again function
+        // !!!! if yes : clear word history, start game
+        // !!!! if no : thank player, show contact info
       }
+      
       
     }
   }
-
-  
 
   
   return (
