@@ -6,7 +6,6 @@ const Guess = (props) => {
     const [targetWord, setTargetWord] = useState("");
     
     useEffect(() => {
-        console.log("COMPONENT MOUNTED");
         if (props.word) {
             setWordArray([...props.word])
         }
@@ -14,14 +13,9 @@ const Guess = (props) => {
             setTargetWord(props.targetWord)
         }
         return () => {
-            console.log("COMPONENT UNMOUNTED");
         };
     }, [props.word, props.targetWord]);
 
-    // !!!! Need to add in logic for what color each character box is
-    // !!!! Need to know what the target word is to color each char box
-    // !!!! It will probably be easier to have a character box component that I can pass the character to 
-    // !!!! Later on I need to reset this back to blank state
     return (
         <div className="guess-box">
             {wordArray.map((char, key) => {
@@ -40,12 +34,6 @@ const Guess = (props) => {
         </div>
     )
 }
-
-// return (
-//     <div className="guess-box">
-//         {wordArray.map((char, key) => <h2 key={key} className="character-box">{char}</h2>)}
-//     </div>
-// )
 
 Guess.propTypes = {
   word: PropTypes.string,
