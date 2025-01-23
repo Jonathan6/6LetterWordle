@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import viteLogo from '/vite.svg'
 import './App.css'
 
@@ -20,6 +20,11 @@ function App() {
     console.log(wordIndex)
     setTargetWord(wordBank[wordIndex])
   }
+
+  // Used to track game logic and start the game on page load
+  useEffect(() => {
+    startGame()
+  }, []);
 
   const updateGuess = () => {
     setUserInput(event.target.value.toUpperCase())
@@ -66,7 +71,7 @@ function App() {
         <Guess word={guessHistory[4]} targetWord={targetWord}/>
         <Guess word={guessHistory[5]} targetWord={targetWord}/>
       </div>
-      <input onChange={updateGuess}></input> <button onClick={submitGuess}>Submit</button> <button onClick={startGame}>Start</button>
+      <input onChange={updateGuess}></input> <button onClick={submitGuess}>Submit</button>
 
     </>
   )
