@@ -1,0 +1,84 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+/* History Box: Aligns Guess components vertically */
+.history-box {
+  display: flex;
+  flex-direction: column; /* Stack Guess components vertically */
+  gap: 10px; /* Optional: Adds spacing between Guess components */
+  align-items: center; /* Centers Guess components horizontally */
+}
+
+/* Guess Box: Aligns character boxes horizontally */
+.guess-box {
+  display: flex; /* Align child elements horizontally */
+  gap: 5px; /* Adds spacing between character boxes */
+}
+
+/* Character Box: Styles individual letter boxes */
+.character-box {
+  width: 50px; /* Fixed width for each character box */
+  height: 50px; /* Fixed height for each character box */
+  display: flex;
+  align-items: center; /* Vertically center the text */
+  justify-content: center; /* Horizontally center the text */
+  border: 2px solid rgb(60, 60, 60); /* Optional: Border for visual clarity */
+  font-size: 24px; /* Font size for the characters */
+  text-transform: uppercase; /* Ensure all characters are uppercase */
+}
+
+/* These CSS classes are for showing the results of a guess */
+/* Grey means the char is not in the target word */
+.grey {
+  background-color: #333333;
+}
+
+/* Yellow means the char is in the word but the index is wrong*/
+.yellow {
+  background-color: #b8af35;
+}
+
+/* Green means the char is in the word and in the right index*/
+.green {
+  background-color: #5e994c;
+}
