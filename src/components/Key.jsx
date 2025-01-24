@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-// import { useEffect, useState } from 'react'
 
 const Key = (props) => {
     if (/^[a-zA-Z]$/.test(props.char)) {

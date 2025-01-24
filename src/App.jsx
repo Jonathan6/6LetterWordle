@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react'
-import './App.css'
-import wordBank from './utils/wordBank'
+import { useEffect, useState } from 'react';
+import './App.css';
+import wordBank from './utils/wordBank';
 
-import { Guess } from './components/Guess'
-import { Keyboard } from './components/Keyboard'
+import { Guess } from './components/Guess';
+import { Keyboard } from './components/Keyboard';
+import { Leaderboard } from './components/Leaderboard';
 
 
 function App() {
@@ -12,6 +13,8 @@ function App() {
   const [guessHistory, setGuessHistory] = useState([]);
   // This is the word the user is coming up with
   const [userInput, setUserInput] = useState("");
+  // Boolean that controls leaderboard toggle
+  const [leaderboard, setLeaderboard] = useState(false);
 
   // !!!!! Need to add to hook so it runs at site start up
   const startGame = () => {
@@ -22,7 +25,12 @@ function App() {
 
   // Used to track game logic and start the game on page load
   useEffect(() => {
+    window.addEventListener('keyup', handleKeyPress);
     startGame();
+
+    return () => {
+      window.removeEventListener('keyup', handleKeyPress);
+    }
   }, []);
 
   const addCharUserInput = (char) => {
@@ -68,18 +76,18 @@ function App() {
     }
   }
 
-  useEffect(() => {
-    window.addEventListener('keyup', handleKeyPress);
+  const toggleLeaderboard = () => {
+    setLeaderboard((leaderboard) => !leaderboard);
+  }
 
-    return () => {
-      window.removeEventListener('keyup', handleKeyPress);
-    }
-  }, []);
   
   return (
     <>
       <nav className='navbar'>
-        <button>Tips</button><button>Leaderboard</button><button>?</button><button>Setting</button>
+        <button>Tips</button>
+        <button onClick={() => toggleLeaderboard()}>Leaderboard</button>
+        <button>?</button>
+        <button>Setting</button>
       </nav>
       <div className='content'>
         <div className="history-box">
@@ -95,6 +103,7 @@ function App() {
         </div>
         <Keyboard addChar={addCharUserInput} backspace={removeLastCharUserInput} submit={submitGuess}/>
       </div>
+      {leaderboard && <Leaderboard toggleLeaderboard={toggleLeaderboard}/>}
     </>
   )
 }
