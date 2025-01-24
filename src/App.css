@@ -5,31 +5,25 @@
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #333;
+  color: white;
+  padding: 10px 20px;
+  z-index: 1000; /* Ensures it stays above other elements */
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.content {
+  padding: 20px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+@media (max-width: 768px) {
+  .navbar {
+    font-size: 14px;
+    padding: 10px;
   }
 }
 
@@ -45,14 +39,15 @@
 .history-box {
   display: flex;
   flex-direction: column; /* Stack Guess components vertically */
-  gap: 10px; /* Optional: Adds spacing between Guess components */
   align-items: center; /* Centers Guess components horizontally */
+  height: 400px;
 }
 
 /* Guess Box: Aligns character boxes horizontally */
 .guess-box {
   display: flex; /* Align child elements horizontally */
   gap: 5px; /* Adds spacing between character boxes */
+  height: 60px;
 }
 
 /* Character Box: Styles individual letter boxes */
@@ -65,6 +60,21 @@
   border: 2px solid rgb(60, 60, 60); /* Optional: Border for visual clarity */
   font-size: 24px; /* Font size for the characters */
   text-transform: uppercase; /* Ensure all characters are uppercase */
+}
+
+.ui {
+  height: 50px
+}
+
+.key {
+  background-color: rgb(141, 141, 141);
+  height: 60px;
+  font-weight: bold;
+  margin-left: 1px;
+  margin-right: 1px;
+  margin-top: 3px;
+  margin-bottom: 3px;
+  font-family: system-ui;
 }
 
 /* These CSS classes are for showing the results of a guess */

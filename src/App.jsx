@@ -78,21 +78,23 @@ function App() {
   
   return (
     <>
-      <div>
-        <h1>Wordle Plus One</h1>
+      <nav className='navbar'>
+        <button>Tips</button><button>Leaderboard</button><button>?</button><button>Setting</button>
+      </nav>
+      <div className='content'>
+        <div className="history-box">
+          <Guess word={guessHistory[0]} targetWord={targetWord}/>
+          <Guess word={guessHistory[1]} targetWord={targetWord}/>
+          <Guess word={guessHistory[2]} targetWord={targetWord}/>
+          <Guess word={guessHistory[3]} targetWord={targetWord}/>
+          <Guess word={guessHistory[4]} targetWord={targetWord}/>
+          <Guess word={guessHistory[5]} targetWord={targetWord}/>
+        </div>
+        <div className="ui">
+          {userInput}
+        </div>
+        <Keyboard addChar={addCharUserInput} backspace={removeLastCharUserInput} submit={submitGuess}/>
       </div>
-      <div className="history-box">
-        <Guess word={guessHistory[0]} targetWord={targetWord}/>
-        <Guess word={guessHistory[1]} targetWord={targetWord}/>
-        <Guess word={guessHistory[2]} targetWord={targetWord}/>
-        <Guess word={guessHistory[3]} targetWord={targetWord}/>
-        <Guess word={guessHistory[4]} targetWord={targetWord}/>
-        <Guess word={guessHistory[5]} targetWord={targetWord}/>
-      </div>
-      <div className="ui">
-        {userInput}
-      </div>
-      <Keyboard addChar={addCharUserInput} backspace={removeLastCharUserInput} submit={submitGuess}/>
     </>
   )
 }

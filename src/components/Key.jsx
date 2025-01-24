@@ -4,15 +4,15 @@ import PropTypes from 'prop-types';
 const Key = (props) => {
     if (/^[a-zA-Z]$/.test(props.char)) {
         return (
-            <button onClick={() => props.addChar(props.char)}>{props.char}</button>
+            <button className='key' onClick={() => props.addChar(props.char)}>{props.char}</button>
         );
     } else if (props.char === "BACK") {
         return (
-            <button onClick={() => props.backspace()}>{props.char}</button>
+            <button className='key' onClick={() => props.backspace()}>{props.char}</button>
         );
     } else if (props.char === "ENTER") {
         return (
-            <button onClick={() => props.submit()}>{props.char}</button>
+            <button className='key' onClick={() => props.submit()}>{props.char}</button>
         );
     }
     
