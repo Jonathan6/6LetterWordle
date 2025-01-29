@@ -1,33 +1,60 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
-
+import { BarChart, Bar, Rectangle, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+  
 const Leaderboard = (props) => {
     // Each index corresponds to the number of guesses
     // Each time the user plays a game they will get a score and will get a plus 1 in that category
     // 0 Index is reserved for when they were unable to guess the word
-    const [scores, setScores] = useState(localStorage.getItem('scores') !== null ? localStorage.getItem('scores') : [0,0,0,0,0,0,0]);
     
+    // Clears localstorage and current leaderboard of all scores
+    const clearData = () => {
+        localStorage.clear();
+    }
+    
+    const playAgain = () => {
+        console.log("play again");
+        props.toggleLeaderboard();
+        props.startGame();
+    }
 
     return (
         <div className="leaderboard-overlay">
             <div className="leaderboard">
+                <button onClick={clearData}>Clear</button>
                 <button className="close-btn" onClick={props.toggleLeaderboard}>X</button>
                 <h2>Number of Guesses</h2>
-                <ul>
-                    <li>1 - {scores[1]}</li>
-                    <li>2 - {scores[2]}</li>
-                    <li>3 - {scores[3]}</li>
-                    <li>4 - {scores[4]}</li>
-                    <li>5 - {scores[5]}</li>
-                    <li>6 - {scores[6]}</li>
-                </ul>
+                <ResponsiveContainer width={"100%"} height={300}>
+                    <BarChart
+                        data={props.scores}
+                        margin={{
+                        top: 5,
+                        right: 30,
+                        left: 20,
+                        bottom: 5,
+                        }}
+                    >
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="name" />
+                        <YAxis />
+                        <Tooltip />
+                        <Bar
+                        dataKey="tries"
+                        fill="#B3CDAD"
+                        activeBar={<Rectangle fill="pink" stroke="blue" />}
+                        />
+                    </BarChart>
+                </ResponsiveContainer>
+                <button onClick={playAgain}>Play Again</button>
+                <button onClick={() => console.log(props.scores)}>test</button>
             </div>
         </div>
     );
 }
 
 Leaderboard.propTypes = {
-    toggleLeaderboard: PropTypes.func
+    toggleLeaderboard: PropTypes.func,
+    startGame: PropTypes.func,
+    scores: PropTypes.array
 }
 
 export { Leaderboard };

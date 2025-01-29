@@ -15,23 +15,74 @@ function App() {
   const [userInput, setUserInput] = useState("");
   // Boolean that controls leaderboard toggle
   const [leaderboard, setLeaderboard] = useState(false);
+  const [scores, setScores] = useState([
+        {
+        name: '1',
+        tries: 0
+        },
+        {
+        name: '2',
+        tries: 0
+        },
+        {
+        name: '3',
+        tries: 0
+        },
+        {
+        name: '4',
+        tries: 0
+        },
+        {
+        name: '5',
+        tries: 0
+        },
+        {
+        name: '6',
+        tries: 0
+        },
+        {
+        name: 'Failed',
+        tries: 0
+        },
+    ]);
+  const [winCheck, setWinCheck] = useState(true);
 
   // !!!!! Need to add to hook so it runs at site start up
   const startGame = () => {
+    // Select Word
     const wordIndex = Math.floor(Math.random() * wordBank.length);
     setTargetWord(wordBank[wordIndex]);
     console.log(wordBank[wordIndex]);
   }
 
   // Used to track game logic and start the game on page load
+  // General hook
   useEffect(() => {
     window.addEventListener('keyup', handleKeyPress);
+    setUpLeaderboard();
     startGame();
 
     return () => {
       window.removeEventListener('keyup', handleKeyPress);
     }
   }, []);
+
+  // GuessHistory hook
+  useEffect(() => {
+    // loss
+    if (guessHistory[guessHistory.length - 1] === targetWord) {
+      alert("CORRECT CORRECT CORRECT!!!");
+      finishGame();
+    } else if (guessHistory.length >= 6) {
+      setWinCheck(false);
+      finishGame();
+    }
+  }, [guessHistory]);
+
+  // Scores hook
+  useEffect(() => {
+    localStorage.setItem('scores', scores);
+  }, [scores]);
 
   const addCharUserInput = (char) => {
     setUserInput(prevUserInput => prevUserInput + char);
@@ -42,8 +93,6 @@ function App() {
   }
 
   const submitGuess = () => {
-    console.log(userInput);
-
     if (userInput.length !== 6) {
       console.log("WRONG LENGTH");
     } else if (!wordBank.includes(userInput)) {
@@ -51,15 +100,7 @@ function App() {
     } else if (guessHistory.includes(userInput)) {
       console.log("WORD ALREADY GUESSED");
     } else {
-      setGuessHistory([...guessHistory, userInput]);
-
-      if (userInput === targetWord) {
-        alert("CORRECT CORRECT CORRECT!!!");
-        // !!!! show scoreboard
-        // !!!! play again function
-        // !!!! if yes : clear word history, start game
-        // !!!! if no : thank player, show contact info
-      }
+      setGuessHistory((guessHistory) => [...guessHistory, userInput]);
     }
   }
 
@@ -80,6 +121,49 @@ function App() {
     setLeaderboard((leaderboard) => !leaderboard);
   }
 
+  // Loads previous scores onto leaderboard
+  const setUpLeaderboard = () => {
+    const data = localStorage.getItem('scores');
+        if (data) {
+            try {
+                const scoresArray = JSON.parse(data)
+                setScores(scoresArray)
+            } catch (error) {
+                console.error('Error parsing JSON:', error);
+            }
+        } else {
+            console.log("No scores found in localstorage");
+            console.log(scores)
+        }
+  }
+
+// Adds the result of the game to the leaderboard
+  const updateLeaderboard = () => {
+    // Since it is possible to win on the 6th guess winCheck is to determine if player won or lost
+    // We add one to the index equal to guessHistory length
+    let target = 0;
+    if (winCheck) {
+      target = guessHistory.length;
+    }
+
+    localStorage.setItem('scores', JSON.stringify(scores));
+    console.log(target)
+    console.log(guessHistory)
+    console.log(guessHistory.length)
+    
+    scores.map((score, index) => {
+        if (index === target) {
+            return (score + 1);
+        } else {
+            return score;
+        }
+    });
+  }
+
+  const finishGame = () => {
+    updateLeaderboard();
+    toggleLeaderboard();
+  }
   
   return (
     <>
@@ -103,9 +187,9 @@ function App() {
         </div>
         <Keyboard addChar={addCharUserInput} backspace={removeLastCharUserInput} submit={submitGuess}/>
       </div>
-      {leaderboard && <Leaderboard toggleLeaderboard={toggleLeaderboard}/>}
+      {leaderboard && <Leaderboard toggleLeaderboard={toggleLeaderboard} startGame={startGame} scores={scores}/>}
     </>
   )
 }
 
-export default App
+export default App;
