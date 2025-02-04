@@ -11,22 +11,22 @@ const Keyboard = (props) => {
         <div className='row_one'>
         {rowOne.map((char, key) => {
             return (
-                <Key key={key} addChar={props.addChar} backspace={props.backspace} submit={props.submit} char={char}/>
+                <Key key={key} addChar={props.addChar} char={char}/>
             )
           })}
         </div>
         <div className='row_two'>
         {rowTwo.map((char, key) => {
             return (
-                <Key key={key} addChar={props.addChar} backspace={props.backspace} submit={props.submit} char={char}/>
+                <Key key={key} addChar={props.addChar} char={char}/>
             )
           })}
         </div>
         <div className='row_three'>
         {rowThree.map((char, key) => {
-            return (
-                <Key key={key} addChar={props.addChar} backspace={props.backspace} submit={props.submit} char={char}/>
-            )
+          return (
+              <Key key={key} addChar={props.addChar} backspace={props.backspace} submit={props.submit} char={char}/>
+          )
           })}
         </div>
       </div>
@@ -36,7 +36,7 @@ const Keyboard = (props) => {
 Keyboard.propTypes = {
   addChar: PropTypes.func,
   backspace: PropTypes.func,
-  submit: PropTypes.func,
+  submit: PropTypes.func
 }
 
 export { Keyboard };

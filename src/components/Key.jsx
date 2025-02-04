@@ -14,14 +14,13 @@ const Key = (props) => {
             <button className='key' onClick={() => props.submit()}>{props.char}</button>
         );
     }
-    
 }
 
 Key.propTypes = {
-  addChar: PropTypes.func,
+    addChar: PropTypes.func,
     backspace: PropTypes.func,
     submit: PropTypes.func,
-  char: PropTypes.string
+    char: PropTypes.string
 }
 
 export { Key };

@@ -2,18 +2,18 @@ import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react'
 
 const Guess = (props) => {
-    const [wordArray, setWordArray] = useState(props.word ? [...props.word] : [" ", " ", " ", " ", " ", " "]);
+    const [wordArray, setWordArray] = useState([]);
     const [targetWord, setTargetWord] = useState("");
     
     useEffect(() => {
         if (props.word) {
             setWordArray([...props.word])
+        } else {
+            setWordArray([" ", " ", " ", " ", " ", " "])
         }
         if (props.targetWord) {
-            setTargetWord(props.targetWord)
+            setTargetWord(props.targetWord);
         }
-        return () => {
-        };
     }, [props.word, props.targetWord]);
 
     return (

@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 import wordBank from './utils/wordBank';
 
@@ -8,87 +8,84 @@ import { Leaderboard } from './components/Leaderboard';
 
 
 function App() {
+  // State 1: User is trying to guesss
   const [targetWord, setTargetWord] = useState("");
-  // The words the user has guessed
+  // State 2: Words array the user has guessed
   const [guessHistory, setGuessHistory] = useState([]);
-  // This is the word the user is coming up with
+  // State 3: Current user guess
   const [userInput, setUserInput] = useState("");
-  // Boolean that controls leaderboard toggle
+  // State 4: Used to toggle leaderboard visibility
   const [leaderboard, setLeaderboard] = useState(false);
-  const [scores, setScores] = useState([
-        {
-        name: '1',
-        count: 0
-        },
-        {
-        name: '2',
-        count: 0
-        },
-        {
-        name: '3',
-        count: 0
-        },
-        {
-        name: '4',
-        count: 0
-        },
-        {
-        name: '5',
-        count: 0
-        },
-        {
-        name: '6',
-        count: 0
-        },
-        {
-        name: 'Failed',
-        count: 0
-        },
-    ]);
-  const winCheck = useRef(false);
+  // State 5: Number array of past scores
+  const [scores, setScores] = useState("");
+  // State 6: Current state ( active | win | loss )
+  const [gameState, setGameState] = useState("");
 
-  const startGame = () => {
-    // Select Word
-    setGuessHistory([]);
-    winCheck.current = true;
-    const wordIndex = Math.floor(Math.random() * wordBank.length);
-    setTargetWord(wordBank[wordIndex]);
-    console.log(wordBank[wordIndex]);
-  }
-
-  // Used to track game logic and start the game on page load
-  // General hook
+  // General hook: start the game on page load
   useEffect(() => {
     window.addEventListener('keyup', handleKeyPress);
-    setUpLeaderboard();
-    startGame();
+    if (scores === "") {
+      setUpLeaderboard();
+    }
+    if (targetWord === "") {
+      startGame();
+    }
 
     return () => {
       window.removeEventListener('keyup', handleKeyPress);
     }
   }, []);
 
-  // GuessHistory hook
+  // GuessHistory hook: sets game state
   useEffect(() => {
-    // loss
-    // if (guessHistory.length > 0 && guessHistory[guessHistory.length - 1] === targetWord) {
-      // alert("CORRECT CORRECT CORRECT!!!");
-      // finishGame();
-    // } else if (guessHistory.length >= 6) {
-      // winCheck.current = false;
-      // finishGame();
-    // }
+    if (guessHistory.length > 0) {
+      // sets to loss
+      if (guessHistory.length === 6) {
+        setGameState("loss");
+      }
+      // sets to win
+      // There is an edgecase where the user guesses the word on the final try and both these statements are true
+      if (guessHistory.includes(targetWord)) {
+        setGameState("win");
+      }
+    }
   }, [guessHistory]);
 
-  // Scores hook
-  // useEffect(() => {
-  // }, [scores]);
+  useEffect(() => {
+    if (gameState === "loss" || gameState === "win") {
+      finishGame()
+    }
+  }, [gameState]);
+
+  const startGame = () => {
+    // Select Word
+    setGuessHistory([]);
+    setUserInput("")
+    setGameState("active");
+    const wordIndex = Math.floor(Math.random() * wordBank.length);
+    setTargetWord(wordBank[wordIndex]);
+    console.log(wordBank[wordIndex]);
+  }
+
+  const finishGame = () => {
+    if (gameState == "win") {
+      // win
+      updateScores(guessHistory.length);
+      // TODO: add victory message
+    } else {
+      // loss
+      updateScores(0)
+      // TODO: add loss message
+    }
+    toggleLeaderboard();
+  }
 
   const addCharUserInput = (char) => {
     if (userInput.length < 6) {
       setUserInput(prevUserInput => prevUserInput + char);
     } else {
       console.log("too long!");
+      console.log(userInput);
     }
   }
 
@@ -97,18 +94,30 @@ function App() {
       setUserInput(prevUserInput => prevUserInput.slice(0,-1));
     } else {
       console.log("too short!");
+      console.log(userInput);
+    }
+  }
+
+  const checkGuess = (word) => {
+    if (word.length !== 6) {
+      console.log("WRONG LENGTH");
+      return false;
+    } else if (!wordBank.includes(word)) {
+      console.log("NOT VALID WORD");
+      return false;
+    } else if (guessHistory.includes(word)) {
+      console.log("WORD ALREADY GUESSED");
+      return false
+    } else {
+      return true;
     }
   }
 
   const submitGuess = () => {
-    if (userInput.length !== 6) {
-      console.log("WRONG LENGTH");
-    } else if (!wordBank.includes(userInput)) {
-      console.log("NOT VALID WORD");
-    } else if (guessHistory.includes(userInput)) {
-      console.log("WORD ALREADY GUESSED");
-    } else {
+    console.log(userInput);
+    if (checkGuess(userInput)) {
       setGuessHistory((guessHistory) => [...guessHistory, userInput]);
+      setUserInput("");
     }
   }
 
@@ -117,9 +126,7 @@ function App() {
     if (key.length === 1 && /^[a-zA-Z]$/.test(key)) {
       addCharUserInput(key);
     } else if (key === "BACKSPACE") {
-      if (userInput.length > 0) {
-        removeLastCharUserInput();
-      }
+      removeLastCharUserInput();
     } else if (key === "ENTER") {
       submitGuess();
     }
@@ -132,17 +139,47 @@ function App() {
   // Loads previous scores onto leaderboard
   const setUpLeaderboard = () => {
     const data = localStorage.getItem('scores');
-        if (data) {
-            try {
-                const scoresArray = JSON.parse(data);
-                setScores(scoresArray);
-            } catch (error) {
-                console.error('Error parsing JSON:', error);
-            }
-        } else {
-            console.log("No scores found in localstorage");
-            console.log(scores)
-        }
+    if (data) {
+      try {
+        const scoresArray = JSON.parse(data);
+        setScores(scoresArray);
+      } catch (error) {
+        console.error('Error parsing JSON:', error);
+      }
+    } else {
+      console.log("No scores found in localstorage");
+      setScores([
+          {
+          name: '1',
+          count: 0
+          },
+          {
+          name: '2',
+          count: 0
+          },
+          {
+          name: '3',
+          count: 0
+          },
+          {
+          name: '4',
+          count: 0
+          },
+          {
+          name: '5',
+          count: 0
+          },
+          {
+          name: '6',
+          count: 0
+          },
+          {
+          name: 'Failed',
+          count: 0
+          },
+      ]);
+      console.log(scores)
+    }
   }
 
 // Adds the result of the game to the leaderboard
@@ -167,18 +204,9 @@ function App() {
     //  TODO: Currently the console log delays it enough for scores to update to be stored locally.
     console.log(scores);
     localStorage.setItem('scores', JSON.stringify(scores));
+    localStorage.setItem('scores', JSON.stringify(scores));
   }
 
-  const finishGame = () => {
-    // if (winCheck) {
-    //   updateScores(guessHistory.length);
-    // } else {
-    //   updateScores(0);
-    // }
-    updateScores(guessHistory.length);
-    toggleLeaderboard();
-  }
-  
   return (
     <>
       <nav className='navbar'>
