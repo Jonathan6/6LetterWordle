@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import './App.css';
 import wordBank from './utils/wordBank';
 
@@ -18,38 +18,39 @@ function App() {
   const [scores, setScores] = useState([
         {
         name: '1',
-        tries: 0
+        count: 0
         },
         {
         name: '2',
-        tries: 0
+        count: 0
         },
         {
         name: '3',
-        tries: 0
+        count: 0
         },
         {
         name: '4',
-        tries: 0
+        count: 0
         },
         {
         name: '5',
-        tries: 0
+        count: 0
         },
         {
         name: '6',
-        tries: 0
+        count: 0
         },
         {
         name: 'Failed',
-        tries: 0
+        count: 0
         },
     ]);
-  const [winCheck, setWinCheck] = useState(true);
+  const winCheck = useRef(false);
 
-  // !!!!! Need to add to hook so it runs at site start up
   const startGame = () => {
     // Select Word
+    setGuessHistory([]);
+    winCheck.current = true;
     const wordIndex = Math.floor(Math.random() * wordBank.length);
     setTargetWord(wordBank[wordIndex]);
     console.log(wordBank[wordIndex]);
@@ -70,26 +71,33 @@ function App() {
   // GuessHistory hook
   useEffect(() => {
     // loss
-    if (guessHistory[guessHistory.length - 1] === targetWord) {
-      alert("CORRECT CORRECT CORRECT!!!");
-      finishGame();
-    } else if (guessHistory.length >= 6) {
-      setWinCheck(false);
-      finishGame();
-    }
+    // if (guessHistory.length > 0 && guessHistory[guessHistory.length - 1] === targetWord) {
+      // alert("CORRECT CORRECT CORRECT!!!");
+      // finishGame();
+    // } else if (guessHistory.length >= 6) {
+      // winCheck.current = false;
+      // finishGame();
+    // }
   }, [guessHistory]);
 
   // Scores hook
-  useEffect(() => {
-    localStorage.setItem('scores', scores);
-  }, [scores]);
+  // useEffect(() => {
+  // }, [scores]);
 
   const addCharUserInput = (char) => {
-    setUserInput(prevUserInput => prevUserInput + char);
+    if (userInput.length < 6) {
+      setUserInput(prevUserInput => prevUserInput + char);
+    } else {
+      console.log("too long!");
+    }
   }
 
   const removeLastCharUserInput = () => {
-    setUserInput(prevUserInput => prevUserInput.slice(0,-1));
+    if (userInput.length > 0) {
+      setUserInput(prevUserInput => prevUserInput.slice(0,-1));
+    } else {
+      console.log("too short!");
+    }
   }
 
   const submitGuess = () => {
@@ -126,8 +134,8 @@ function App() {
     const data = localStorage.getItem('scores');
         if (data) {
             try {
-                const scoresArray = JSON.parse(data)
-                setScores(scoresArray)
+                const scoresArray = JSON.parse(data);
+                setScores(scoresArray);
             } catch (error) {
                 console.error('Error parsing JSON:', error);
             }
@@ -138,30 +146,36 @@ function App() {
   }
 
 // Adds the result of the game to the leaderboard
-  const updateLeaderboard = () => {
+  const updateScores = (target) => {
     // Since it is possible to win on the 6th guess winCheck is to determine if player won or lost
     // We add one to the index equal to guessHistory length
-    let target = 0;
-    if (winCheck) {
-      target = guessHistory.length;
-    }
-
+    setScores(scores.map((score) => {
+      if (score.name === target.toString()) {
+        return ({
+          name: score.name,
+          count: score.count + 1
+          });
+      } else if (target === 0 && score.name === "Failed") {
+        return ({
+          name: score.name,
+          count: score.count + 1
+          });
+      } else {
+        return score;
+      }
+    }));
+    //  TODO: Currently the console log delays it enough for scores to update to be stored locally.
+    console.log(scores);
     localStorage.setItem('scores', JSON.stringify(scores));
-    console.log(target)
-    console.log(guessHistory)
-    console.log(guessHistory.length)
-    
-    scores.map((score, index) => {
-        if (index === target) {
-            return (score + 1);
-        } else {
-            return score;
-        }
-    });
   }
 
   const finishGame = () => {
-    updateLeaderboard();
+    // if (winCheck) {
+    //   updateScores(guessHistory.length);
+    // } else {
+    //   updateScores(0);
+    // }
+    updateScores(guessHistory.length);
     toggleLeaderboard();
   }
   

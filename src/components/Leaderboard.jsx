@@ -38,7 +38,7 @@ const Leaderboard = (props) => {
                         <YAxis />
                         <Tooltip />
                         <Bar
-                        dataKey="tries"
+                        dataKey="count"
                         fill="#B3CDAD"
                         activeBar={<Rectangle fill="pink" stroke="blue" />}
                         />
