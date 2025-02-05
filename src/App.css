@@ -67,11 +67,16 @@
 }
 
 .key {
-  background-color: rgb(141, 141, 141);
+  background-color: #818384;
   height: 60px;
   font-weight: bold;
-  margin-left: 1px;
-  margin-right: 1px;
+  font-size: large;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-left: 3px;
+  margin-right: 3px;
   margin-top: 3px;
   margin-bottom: 3px;
   font-family: system-ui;
@@ -80,17 +85,17 @@
 /* These CSS classes are for showing the results of a guess */
 /* Grey means the char is not in the target word */
 .grey {
-  background-color: #333333;
+  background-color: #3A3A3C;
 }
 
 /* Yellow means the char is in the word but the index is wrong*/
 .yellow {
-  background-color: #b8af35;
+  background-color: #B59F3B;
 }
 
 /* Green means the char is in the word and in the right index*/
 .green {
-  background-color: #5e994c;
+  background-color: #538D4E;
 }
 
 /* Leaderboard overlay styling */
@@ -102,7 +107,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent dark background */
+  background-color: rgba(18, 18, 19, 1);
   z-index: 9999; /* Ensure it's on top */
   justify-content: center;
   overflow-y: auto; /* Allow scrolling if content exceeds the screen height */
@@ -127,22 +132,6 @@
   background-color: lightblue;
   padding: 10px;
   border-radius: 4px;
-}
-
-/* Example of leaderboard items */
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-li {
-  padding: 10px;
-  border-bottom: 1px solid #ddd;
-  font-size: 18px;
-}
-
-li:last-child {
-  border-bottom: none;
 }
 
 /* Button to close the leaderboard */

@@ -8,21 +8,21 @@ const Keyboard = (props) => {
 
     return (
         <div className='keyboard'>
-        <div className='row_one'>
+        <div className='row row_one'>
         {rowOne.map((char, key) => {
             return (
                 <Key key={key} addChar={props.addChar} char={char}/>
             )
           })}
         </div>
-        <div className='row_two'>
+        <div className='row row_two'>
         {rowTwo.map((char, key) => {
             return (
                 <Key key={key} addChar={props.addChar} char={char}/>
             )
           })}
         </div>
-        <div className='row_three'>
+        <div className='row row_three'>
         {rowThree.map((char, key) => {
           return (
               <Key key={key} addChar={props.addChar} backspace={props.backspace} submit={props.submit} char={char}/>
