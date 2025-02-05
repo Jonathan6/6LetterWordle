@@ -4,7 +4,7 @@ import wordBank from './utils/wordBank';
 
 import { Guess } from './components/Guess';
 import { Keyboard } from './components/Keyboard';
-import { Leaderboard } from './components/Leaderboard';
+import { LeaderboardModal } from './components/LeaderboardModal';
 
 
 function App() {
@@ -277,7 +277,8 @@ function App() {
         <button>?</button>
         <button>Setting</button>
       </nav>
-      {leaderboard && <Leaderboard toggleLeaderboard={toggleLeaderboard} startGame={startGame} scores={scores} gameState={gameState} clearScores={clearScores}/>}
+      {leaderboard && <LeaderboardModal toggleLeaderboard={toggleLeaderboard} startGame={startGame} scores={scores} gameState={gameState} clearScores={clearScores}/>}
+
       <div className='content'>
         <div className="history-box">
           <Guess word={guessHistory[0]} targetWord={targetWord}/>
