@@ -19,8 +19,8 @@ const LeaderboardModal = (props) => {
     }
 
     return (
-        <div className="leaderboard-overlay">
-            <div className="leaderboard">
+        <div className="modal-overlay">
+            <div className="modal">
                 <button onClick={clearData}>Clear</button>
                 <button className="close-btn" onClick={props.toggleLeaderboard}>X</button>
                 {props.gameState === "loss" && <h1>Better Luck Next Time</h1>} 

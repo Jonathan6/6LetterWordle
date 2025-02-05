@@ -5,6 +5,7 @@ import wordBank from './utils/wordBank';
 import { Guess } from './components/Guess';
 import { Keyboard } from './components/Keyboard';
 import { LeaderboardModal } from './components/LeaderboardModal';
+import { SettingsModal } from './components/SettingsModal';
 
 
 function App() {
@@ -16,7 +17,9 @@ function App() {
   const [userInput, setUserInput] = useState("");
   // State 4: Used to toggle leaderboard visibility
   const [leaderboard, setLeaderboard] = useState(false);
-  // State 5: Number array of past scores
+  // State 5: Used to toggle leaderboard visibility
+  const [settings, setSettings] = useState(true);
+  // State 6: Number array of past scores
   const [scores, setScores] = useState(() => {
     const savedScores = localStorage.getItem("scores");
     return savedScores ? JSON.parse(savedScores) :
@@ -50,7 +53,7 @@ function App() {
           },
       ];
   });
-  // State 6: Current state ( active | win | loss )
+  // State 7: Current state ( active | win | loss )
   const [gameState, setGameState] = useState("");
 
   // General hook: start the game on page load
@@ -169,51 +172,9 @@ function App() {
     setLeaderboard((leaderboard) => !leaderboard);
   }
 
-  // Loads previous scores onto leaderboard
-  // const setUpLeaderboard = () => {
-  //   const data = localStorage.getItem('scores');
-  //   if (data) {
-  //     try {
-  //       const scoresArray = JSON.parse(data);
-  //       setScores(scoresArray);
-  //     } catch (error) {
-  //       console.error('Error parsing JSON:', error);
-  //     }
-  //   } else {
-  //     console.log("No scores found in localstorage");
-  //     setScores([
-  //         {
-  //         name: '1',
-  //         count: 0
-  //         },
-  //         {
-  //         name: '2',
-  //         count: 0
-  //         },
-  //         {
-  //         name: '3',
-  //         count: 0
-  //         },
-  //         {
-  //         name: '4',
-  //         count: 0
-  //         },
-  //         {
-  //         name: '5',
-  //         count: 0
-  //         },
-  //         {
-  //         name: '6',
-  //         count: 0
-  //         },
-  //         {
-  //         name: 'Failed',
-  //         count: 0
-  //         },
-  //     ]);
-  //     console.log(scores)
-  //   }
-  // }
+  const toggleSettings = () => {
+    setSettings((settings) => !settings);
+  }
 
 // Adds the result of the game to the leaderboard
   const addScore = (target) => {
@@ -275,10 +236,10 @@ function App() {
         <button>Tips</button>
         <button onClick={() => toggleLeaderboard()}>Leaderboard</button>
         <button>?</button>
-        <button>Setting</button>
+        <button onClick={() => toggleSettings()}>Setting</button>
       </nav>
       {leaderboard && <LeaderboardModal toggleLeaderboard={toggleLeaderboard} startGame={startGame} scores={scores} gameState={gameState} clearScores={clearScores}/>}
-
+      {settings && <SettingsModal toggleModal={toggleSettings}/>}
       <div className='content'>
         <div className="history-box">
           <Guess word={guessHistory[0]} targetWord={targetWord}/>
