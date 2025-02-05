@@ -9,6 +9,7 @@ const Leaderboard = (props) => {
     // Clears localstorage and current leaderboard of all scores
     const clearData = () => {
         localStorage.clear();
+        props.clearScores();
     }
     
     const playAgain = () => {
@@ -22,6 +23,8 @@ const Leaderboard = (props) => {
             <div className="leaderboard">
                 <button onClick={clearData}>Clear</button>
                 <button className="close-btn" onClick={props.toggleLeaderboard}>X</button>
+                {props.gameState === "loss" && <h1>Better Luck Next Time</h1>} 
+                {props.gameState === "win" && <h1>Victory!</h1>}
                 <h2>Number of Guesses</h2>
                 <ResponsiveContainer width={"100%"} height={300}>
                     <BarChart
@@ -54,7 +57,9 @@ const Leaderboard = (props) => {
 Leaderboard.propTypes = {
     toggleLeaderboard: PropTypes.func,
     startGame: PropTypes.func,
-    scores: PropTypes.array
+    scores: PropTypes.array,
+    gameState: PropTypes.string,
+    clearScores: PropTypes.func
 }
 
 export { Leaderboard };

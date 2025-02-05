@@ -17,16 +17,45 @@ function App() {
   // State 4: Used to toggle leaderboard visibility
   const [leaderboard, setLeaderboard] = useState(false);
   // State 5: Number array of past scores
-  const [scores, setScores] = useState("");
+  const [scores, setScores] = useState(() => {
+    const savedScores = localStorage.getItem("scores");
+    return savedScores ? JSON.parse(savedScores) :
+          [{
+          name: '1',
+          count: 0
+          },
+          {
+          name: '2',
+          count: 0
+          },
+          {
+          name: '3',
+          count: 0
+          },
+          {
+          name: '4',
+          count: 0
+          },
+          {
+          name: '5',
+          count: 0
+          },
+          {
+          name: '6',
+          count: 0
+          },
+          {
+          name: 'Failed',
+          count: 0
+          },
+      ];
+  });
   // State 6: Current state ( active | win | loss )
   const [gameState, setGameState] = useState("");
 
   // General hook: start the game on page load
   useEffect(() => {
     window.addEventListener('keyup', handleKeyPress);
-    if (scores === "") {
-      setUpLeaderboard();
-    }
     if (targetWord === "") {
       startGame();
     }
@@ -57,6 +86,10 @@ function App() {
     }
   }, [gameState]);
 
+  useEffect(() => {
+    localStorage.setItem("scores", JSON.stringify(scores));
+  }, [scores])
+
   const startGame = () => {
     // Select Word
     setGuessHistory([]);
@@ -70,11 +103,11 @@ function App() {
   const finishGame = () => {
     if (gameState == "win") {
       // win
-      updateScores(guessHistory.length);
+      addScore(guessHistory.length);
       // TODO: add victory message
     } else {
       // loss
-      updateScores(0)
+      addScore(0)
       // TODO: add loss message
     }
     toggleLeaderboard();
@@ -137,53 +170,53 @@ function App() {
   }
 
   // Loads previous scores onto leaderboard
-  const setUpLeaderboard = () => {
-    const data = localStorage.getItem('scores');
-    if (data) {
-      try {
-        const scoresArray = JSON.parse(data);
-        setScores(scoresArray);
-      } catch (error) {
-        console.error('Error parsing JSON:', error);
-      }
-    } else {
-      console.log("No scores found in localstorage");
-      setScores([
-          {
-          name: '1',
-          count: 0
-          },
-          {
-          name: '2',
-          count: 0
-          },
-          {
-          name: '3',
-          count: 0
-          },
-          {
-          name: '4',
-          count: 0
-          },
-          {
-          name: '5',
-          count: 0
-          },
-          {
-          name: '6',
-          count: 0
-          },
-          {
-          name: 'Failed',
-          count: 0
-          },
-      ]);
-      console.log(scores)
-    }
-  }
+  // const setUpLeaderboard = () => {
+  //   const data = localStorage.getItem('scores');
+  //   if (data) {
+  //     try {
+  //       const scoresArray = JSON.parse(data);
+  //       setScores(scoresArray);
+  //     } catch (error) {
+  //       console.error('Error parsing JSON:', error);
+  //     }
+  //   } else {
+  //     console.log("No scores found in localstorage");
+  //     setScores([
+  //         {
+  //         name: '1',
+  //         count: 0
+  //         },
+  //         {
+  //         name: '2',
+  //         count: 0
+  //         },
+  //         {
+  //         name: '3',
+  //         count: 0
+  //         },
+  //         {
+  //         name: '4',
+  //         count: 0
+  //         },
+  //         {
+  //         name: '5',
+  //         count: 0
+  //         },
+  //         {
+  //         name: '6',
+  //         count: 0
+  //         },
+  //         {
+  //         name: 'Failed',
+  //         count: 0
+  //         },
+  //     ]);
+  //     console.log(scores)
+  //   }
+  // }
 
 // Adds the result of the game to the leaderboard
-  const updateScores = (target) => {
+  const addScore = (target) => {
     // Since it is possible to win on the 6th guess winCheck is to determine if player won or lost
     // We add one to the index equal to guessHistory length
     setScores(scores.map((score) => {
@@ -201,10 +234,39 @@ function App() {
         return score;
       }
     }));
-    //  TODO: Currently the console log delays it enough for scores to update to be stored locally.
-    console.log(scores);
     localStorage.setItem('scores', JSON.stringify(scores));
-    localStorage.setItem('scores', JSON.stringify(scores));
+  }
+
+  const clearScores = () => {
+    setScores([{
+      name: '1',
+      count: 0
+      },
+      {
+      name: '2',
+      count: 0
+      },
+      {
+      name: '3',
+      count: 0
+      },
+      {
+      name: '4',
+      count: 0
+      },
+      {
+      name: '5',
+      count: 0
+      },
+      {
+      name: '6',
+      count: 0
+      },
+      {
+      name: 'Failed',
+      count: 0
+      },
+    ]);
   }
 
   return (
@@ -215,6 +277,7 @@ function App() {
         <button>?</button>
         <button>Setting</button>
       </nav>
+      {leaderboard && <Leaderboard toggleLeaderboard={toggleLeaderboard} startGame={startGame} scores={scores} gameState={gameState} clearScores={clearScores}/>}
       <div className='content'>
         <div className="history-box">
           <Guess word={guessHistory[0]} targetWord={targetWord}/>
@@ -229,7 +292,7 @@ function App() {
         </div>
         <Keyboard addChar={addCharUserInput} backspace={removeLastCharUserInput} submit={submitGuess}/>
       </div>
-      {leaderboard && <Leaderboard toggleLeaderboard={toggleLeaderboard} startGame={startGame} scores={scores}/>}
+      
     </>
   )
 }
