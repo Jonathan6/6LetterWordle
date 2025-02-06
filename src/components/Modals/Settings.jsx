@@ -21,7 +21,7 @@ const Settings = (props) => {
         </div>;
     
     return (
-        <Modal toggleModal={props.toggleModal} content={content}></Modal>
+        <Modal title="Settings" content={content} toggleModal={props.toggleModal}></Modal>
     );
 }
 

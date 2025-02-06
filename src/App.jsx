@@ -4,7 +4,7 @@ import wordBank from './utils/wordBank';
 
 import { Guess } from './components/Guess';
 import { Keyboard } from './components/Keyboard';
-import { LeaderboardModal } from './components/LeaderboardModal';
+import { Scoreboard } from './components/Modals/Scoreboard';
 import { Settings } from './components/Modals/Settings';
 
 
@@ -15,10 +15,10 @@ function App() {
   const [guessHistory, setGuessHistory] = useState([]);
   // State 3: Current user guess
   const [userInput, setUserInput] = useState("");
-  // State 4: Used to toggle leaderboard visibility
-  const [leaderboard, setLeaderboard] = useState(false);
-  // State 5: Used to toggle leaderboard visibility
-  const [settings, setSettings] = useState(true);
+  // State 4: Used to toggle scoreboard visibility
+  const [scoreboard, setScoreboard] = useState(true);
+  // State 5: Used to toggle scoreboard visibility
+  const [settings, setSettings] = useState(false);
   // State 6: Number array of past scores
   const [scores, setScores] = useState(() => {
     const savedScores = localStorage.getItem("scores");
@@ -113,7 +113,7 @@ function App() {
       addScore(0)
       // TODO: add loss message
     }
-    toggleLeaderboard();
+    toggleScoreboard();
   }
 
   const addCharUserInput = (char) => {
@@ -168,15 +168,15 @@ function App() {
     }
   }
 
-  const toggleLeaderboard = () => {
-    setLeaderboard((leaderboard) => !leaderboard);
+  const toggleScoreboard = () => {
+    setScoreboard((scoreboard) => !scoreboard);
   }
 
   const toggleSettings = () => {
     setSettings((settings) => !settings);
   }
 
-// Adds the result of the game to the leaderboard
+// Adds the result of the game to the scoreboard
   const addScore = (target) => {
     // Since it is possible to win on the 6th guess winCheck is to determine if player won or lost
     // We add one to the index equal to guessHistory length
@@ -234,11 +234,11 @@ function App() {
     <>
       <nav className='navbar'>
         <button>Tips</button>
-        <button onClick={() => toggleLeaderboard()}>Leaderboard</button>
+        <button onClick={() => toggleScoreboard()}>Scoreboard</button>
         <button>?</button>
         <button onClick={() => toggleSettings()}>Settings</button>
       </nav>
-      {leaderboard && <LeaderboardModal toggleLeaderboard={toggleLeaderboard} startGame={startGame} scores={scores} gameState={gameState} clearScores={clearScores}/>}
+      {scoreboard && <Scoreboard toggleScoreboard={toggleScoreboard} startGame={startGame} scores={scores} gameState={gameState} clearScores={clearScores}/>}
       {settings && <Settings toggleModal={toggleSettings}/>}
       <div className='content'>
         <div className="history-box">
