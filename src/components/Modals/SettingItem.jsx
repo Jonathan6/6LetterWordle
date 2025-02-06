@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { Toggle } from './Toggle';
+import { Toggle } from '../Toggle';
 
 // title, description, lastItem = false
 const SettingItem = (props) => {

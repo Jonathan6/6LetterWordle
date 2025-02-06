@@ -5,7 +5,7 @@ import wordBank from './utils/wordBank';
 import { Guess } from './components/Guess';
 import { Keyboard } from './components/Keyboard';
 import { LeaderboardModal } from './components/LeaderboardModal';
-import { SettingsModal } from './components/SettingsModal';
+import { Settings } from './components/Modals/Settings';
 
 
 function App() {
@@ -236,10 +236,10 @@ function App() {
         <button>Tips</button>
         <button onClick={() => toggleLeaderboard()}>Leaderboard</button>
         <button>?</button>
-        <button onClick={() => toggleSettings()}>Setting</button>
+        <button onClick={() => toggleSettings()}>Settings</button>
       </nav>
       {leaderboard && <LeaderboardModal toggleLeaderboard={toggleLeaderboard} startGame={startGame} scores={scores} gameState={gameState} clearScores={clearScores}/>}
-      {settings && <SettingsModal toggleModal={toggleSettings}/>}
+      {settings && <Settings toggleModal={toggleSettings}/>}
       <div className='content'>
         <div className="history-box">
           <Guess word={guessHistory[0]} targetWord={targetWord}/>

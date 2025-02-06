@@ -15,6 +15,7 @@
   - [Technologies Used](#technologies-used)
     - [React](#react)
     - [Vite](#vite)
+    - [Tailwind CSS](#tailwind-css)
     - [Recharts.js](#rechartsjs)
   - [Installation and Setup](#installation-and-setup)
   - [Future Improvements](#future-improvements)
@@ -26,7 +27,7 @@
 <details>
 <summary>Click to Reveal</summary>
 
-[![Screenshot of 6 Letter Wordle Application](public\SixLetterWordlePreview.jpg)](https://jonathan6.github.io/6LetterWordle/)
+[![Screenshot of 6 Letter Wordle Application](\public\SixLetterWordlePreview.jpg)](https://jonathan6.github.io/6LetterWordle/)
 Click the preview to be redirected to the website!
 </details>
 
@@ -56,6 +57,11 @@ This project was designed to enhance React state management, improve component-b
 
 - Fast development server: Provides near-instant hot module replacement (HMR).
 Optimized builds: Faster than traditional bundlers like Webpack.
+
+### [Tailwind CSS](https://tailwindcss.com/)
+
+- Utility-First Design: Tailwind’s utility classes allow for quick styling with minimal custom CSS.
+- Responsive Layout: Built-in breakpoints ensure the app is mobile-friendly and adapts to various screen sizes.
 
 ### [Recharts.js](https://recharts.org/en-US)
 
