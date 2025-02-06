@@ -1,17 +1,19 @@
 import PropTypes from 'prop-types';
 
 const Key = (props) => {
+    const css = 'key ' + props.char
+
     if (/^[a-zA-Z]$/.test(props.char)) {
         return (
-            <button className='key' onClick={() => props.addChar(props.char)}>{props.char}</button>
+            <button className={css} onClick={() => props.addChar(props.char)}>{props.char}</button>
         );
     } else if (props.char === "BACK") {
         return (
-            <button className='key' onClick={() => props.backspace()}>{props.char}</button>
+            <button className={css} onClick={() => props.backspace()}>{props.char}</button>
         );
     } else if (props.char === "ENTER") {
         return (
-            <button className='key' onClick={() => props.submit()}>{props.char}</button>
+            <button className={css} onClick={() => props.submit()}>{props.char}</button>
         );
     }
 }

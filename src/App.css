@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
+@custom-variant contrast (&:where(.contrast, .contrast *));
+
 @theme {
   --color-grey: #3A3A3C;
   --color-black: #0a0a0a;
@@ -46,7 +50,7 @@
   display: flex;
   align-items: center; /* Vertically center the text */
   justify-content: center; /* Horizontally center the text */
-  border: 2px solid rgb(60, 60, 60); /* Optional: Border for visual clarity */
+  border: 2px solid rgb(60, 60, 60); /* Optional: Border for visual clarity
   font-size: 24px; /* Font size for the characters */
   text-transform: uppercase; /* Ensure all characters are uppercase */
 }

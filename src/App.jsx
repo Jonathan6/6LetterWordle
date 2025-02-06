@@ -99,9 +99,22 @@ function App() {
 
   useEffect(() => {
     localStorage.setItem("scores", JSON.stringify(scores));
-  }, [scores])
+  }, [scores]);
 
   useEffect(() => {
+    document.getElementById('body').classList.add('bg-white');
+    document.getElementById('body').classList.add('dark:bg-black');
+
+    if (presets[1]) {
+      document.getElementById('body').classList.add('dark');
+    } else {
+      document.getElementById('body').classList.remove('dark');
+    }
+    if (presets[2]) {
+      document.getElementById('body').classList.add('contrast');
+    } else {
+      document.getElementById('body').classList.remove('contrast');
+    }
     localStorage.setItem("settings", JSON.stringify(presets));
   }, [presets])
 
@@ -263,7 +276,7 @@ function App() {
           <Guess word={guessHistory[4]} targetWord={targetWord}/>
           <Guess word={guessHistory[5]} targetWord={targetWord}/>
         </div>
-        <div className="ui">
+        <div className="ui text-black dark:text-white">
           {userInput}
         </div>
         <Keyboard addChar={addCharUserInput} backspace={removeLastCharUserInput} submit={submitGuess}/>

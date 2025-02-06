@@ -8,7 +8,7 @@ const SettingItem = (props) => {
         <div className="flex justify-between items-center">
           <div className="flex-1">
             <h3 className="text-lg font-bold">{props.title}</h3>
-            <p className="text-sm text-gray-300">{props.description}</p>
+            <p className="text-sm text-black dark:text-gray-300">{props.description}</p>
           </div>
   
           <Toggle state={props.state} changeState={props.adjustSettings} num={props.index}/>

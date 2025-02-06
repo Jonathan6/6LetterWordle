@@ -21,15 +21,15 @@ const Guess = (props) => {
             {wordArray.map((char, key) => {
                 var color = ""
                 if (char === " ") {
-                    color = ""
+                    color = " bg-white dark:bg-black"
                 } else if (targetWord[key] === char) {
-                    color = " green"
+                    color = "bg-green contrast:bg-orange-500 contrast:text-black"
                 } else if (targetWord.includes(char)) {
-                    color = " yellow"
+                    color = "bg-yellow contrast:bg-sky-500 contrast:text-black"
                 } else {
-                    color = " grey"
+                    color = "bg-grey"
                 }
-                return (<h2 key={key} className={"character-box" + color}>{char}</h2>);
+                return (<h2 key={key} className={"character-box text-white " + color}>{char}</h2>);
                 })}
         </div>
     )
