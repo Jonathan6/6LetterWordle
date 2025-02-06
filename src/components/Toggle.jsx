@@ -1,12 +1,13 @@
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { useState } from 'react';
 
-const Toggle = () => {
-    const [isOn, setIsOn] = useState(false);
+const Toggle = (props) => {
+    const [isOn, setIsOn] = useState(props.state);
 
     // Toggle function
     const toggleSwitch = () => {
-        setIsOn(!isOn);
+        setIsOn(isOn => !isOn);
+        props.changeState(props.num);
     };
 
     return (
@@ -25,6 +26,9 @@ const Toggle = () => {
 }
 
 Toggle.propTypes = {
+    state: PropTypes.bool,
+    changeState: PropTypes.func,
+    num: PropTypes.number
 }
 
 export { Toggle };

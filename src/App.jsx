@@ -9,17 +9,16 @@ import { Settings } from './components/Modals/Settings';
 
 
 function App() {
-  // State 1: User is trying to guesss
-  const [targetWord, setTargetWord] = useState("");
-  // State 2: Words array the user has guessed
-  const [guessHistory, setGuessHistory] = useState([]);
-  // State 3: Current user guess
-  const [userInput, setUserInput] = useState("");
-  // State 4: Used to toggle scoreboard visibility
-  const [scoreboard, setScoreboard] = useState(true);
-  // State 5: Used to toggle scoreboard visibility
+  // State 1: Used to toggle scoreboard visibility
+  const [scoreboard, setScoreboard] = useState(false);
+  // State 2: Used to toggle scoreboard visibility
   const [settings, setSettings] = useState(false);
-  // State 6: Number array of past scores
+  // State 3: Boolean array of the user's saved settings
+  const [presets, setPresets] = useState(() => {
+    const savedSettings = localStorage.getItem("settings");
+    return savedSettings ? JSON.parse(savedSettings) : [false, true, false];
+  });
+  // State 4: Number array of past scores
   const [scores, setScores] = useState(() => {
     const savedScores = localStorage.getItem("scores");
     return savedScores ? JSON.parse(savedScores) :
@@ -53,8 +52,16 @@ function App() {
           },
       ];
   });
-  // State 7: Current state ( active | win | loss )
+  // State 5: Current state ( active | win | loss )
   const [gameState, setGameState] = useState("");
+  
+  // State 6: User is trying to guesss
+  const [targetWord, setTargetWord] = useState("");
+  // State 7: Words array the user has guessed
+  const [guessHistory, setGuessHistory] = useState([]);
+  // State 8: Current user guess
+  const [userInput, setUserInput] = useState("");
+
 
   // General hook: start the game on page load
   useEffect(() => {
@@ -93,6 +100,10 @@ function App() {
     localStorage.setItem("scores", JSON.stringify(scores));
   }, [scores])
 
+  useEffect(() => {
+    localStorage.setItem("settings", JSON.stringify(presets));
+  }, [presets])
+
   const startGame = () => {
     // Select Word
     setGuessHistory([]);
@@ -107,11 +118,9 @@ function App() {
     if (gameState == "win") {
       // win
       addScore(guessHistory.length);
-      // TODO: add victory message
     } else {
       // loss
       addScore(0)
-      // TODO: add loss message
     }
     toggleScoreboard();
   }
@@ -176,6 +185,16 @@ function App() {
     setSettings((settings) => !settings);
   }
 
+  const adjustSettings = (num) => {
+    setPresets(presets.map((state, index) => {
+      if (index === num) {
+        return !state;
+      } else {
+        return state;
+      }
+    }));
+  }
+
 // Adds the result of the game to the scoreboard
   const addScore = (target) => {
     // Since it is possible to win on the 6th guess winCheck is to determine if player won or lost
@@ -195,7 +214,6 @@ function App() {
         return score;
       }
     }));
-    localStorage.setItem('scores', JSON.stringify(scores));
   }
 
   const clearScores = () => {
@@ -239,7 +257,7 @@ function App() {
         <button onClick={() => toggleSettings()}>Settings</button>
       </nav>
       {scoreboard && <Scoreboard toggleScoreboard={toggleScoreboard} startGame={startGame} scores={scores} gameState={gameState} clearScores={clearScores}/>}
-      {settings && <Settings toggleModal={toggleSettings}/>}
+      {settings && <Settings toggleModal={toggleSettings} presets={presets} adjustSettings={adjustSettings}/>}
       <div className='content'>
         <div className="history-box">
           <Guess word={guessHistory[0]} targetWord={targetWord}/>

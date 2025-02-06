@@ -6,16 +6,16 @@ import { Modal } from './Modal';
 const Settings = (props) => {
 
     const settings = [
+        ["Hard Mode", "Must use previous hint in every subsequent guess."],
         ["Dark Mode", "Enables dark mode for better night-time viewing."],
-        ["High Contrast Mode", "Improves visibility with stronger color contrasts."],
-        ["Reduce Motion", "Disables animations for a smoother experience."]
+        ["High Contrast Mode", "Improves visibility with stronger color contrasts."]
     ];
 
     const content = 
         <div className="mt-6 space-y-4">
             {settings.map(([title, description], key) => {
                 return (
-                    <SettingItem key={key} title={title} description={description} lastItem={key === (settings.length - 1)}></SettingItem>
+                    <SettingItem key={key} index={key} title={title} description={description} state={props.presets[key]} adjustSettings={props.adjustSettings} lastItem={key === (settings.length - 1)}></SettingItem>
                 );
             })}
         </div>;
@@ -26,7 +26,9 @@ const Settings = (props) => {
 }
 
 Settings.propTypes = {
-    toggleModal: PropTypes.func
+    toggleModal: PropTypes.func,
+    presets: PropTypes.array,
+    adjustSettings: PropTypes.func
 }
 
 export { Settings };

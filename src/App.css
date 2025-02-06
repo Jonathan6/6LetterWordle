@@ -1,5 +1,12 @@
 @import "tailwindcss";
 
+@theme {
+  --color-grey: #3A3A3C;
+  --color-black: #0a0a0a;
+  --color-green: #538D4E;
+  --color-yellow: #B59F3B;
+}
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
@@ -14,10 +21,6 @@
   color: white;
 }
 
-.content {
-  padding: 20px;
-}
-
 @media (max-width: 768px) {
   .navbar {
     font-size: 14px;
@@ -29,9 +32,6 @@
   padding: 2em;
 }
 
-.read-the-docs {
-  color: #888;
-}
 
 /* History Box: Aligns Guess components vertically */
 .history-box {
@@ -80,47 +80,7 @@
   font-family: system-ui;
 }
 
-/* These CSS classes are for showing the results of a guess */
-/* Grey means the char is not in the target word */
-.grey {
-  background-color: #3A3A3C;
-}
 
-/* Yellow means the char is in the word but the index is wrong*/
-.yellow {
-  background-color: #B59F3B;
-}
-
-/* Green means the char is in the word and in the right index*/
-.green {
-  background-color: #538D4E;
-}
-
-/* Modal overlay styling */
-.modal-overlay {
-  display: flex; /* Show the overlay */
-  align-items: center; /* Vertically center */
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: #0a0a0a;
-  z-index: 9999; /* Ensure it's on top */
-  justify-content: center;
-  overflow-y: auto; /* Allow scrolling if content exceeds the screen height */
-}
-
-/* Modal content styling */
-.modal {
-  background-color: #121213;
-  padding: 20px;
-  border-radius: 8px;
-  width: 80%;
-  max-width: 600px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  z-index: 10000; /* Ensure leaderboard content is on top of the background overlay */
-}
 .modal .button {
   position: absolute;
   top: 0;                  /* Align to the top */
@@ -128,12 +88,4 @@
   background-color: lightblue;
   padding: 10px;
   border-radius: 4px;
-}
-
-/* Button to close the leaderboard */
-.close-btn {
-  background: red;
-  color: white;
-  border: none;
-  cursor: pointer;
 }

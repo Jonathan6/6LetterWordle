@@ -11,7 +11,7 @@ const SettingItem = (props) => {
             <p className="text-sm text-gray-300">{props.description}</p>
           </div>
   
-          <Toggle />
+          <Toggle state={props.state} changeState={props.adjustSettings} num={props.index}/>
         </div>
   
         {!props.lastItem && <div className="border-t border-gray-700 my-4"></div>}
@@ -22,7 +22,10 @@ const SettingItem = (props) => {
 SettingItem.propTypes = {
     title: PropTypes.string,
     description: PropTypes.string,
-    lastItem: PropTypes.bool
+    lastItem: PropTypes.bool,
+    index: PropTypes.number,
+    state: PropTypes.bool,
+    adjustSettings: PropTypes.func
 }
 
 export { SettingItem };
