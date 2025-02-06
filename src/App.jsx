@@ -6,6 +6,7 @@ import { Guess } from './components/Guess';
 import { Keyboard } from './components/Keyboard';
 import { Scoreboard } from './components/Modals/Scoreboard';
 import { Settings } from './components/Modals/Settings';
+import { Navbar } from './components/Navbar';
 
 
 function App() {
@@ -250,12 +251,7 @@ function App() {
 
   return (
     <>
-      <nav className='navbar'>
-        <button>Tips</button>
-        <button onClick={() => toggleScoreboard()}>Scoreboard</button>
-        <button>?</button>
-        <button onClick={() => toggleSettings()}>Settings</button>
-      </nav>
+      <Navbar toggleScoreboard={toggleScoreboard} toggleSettings={toggleSettings}></Navbar>
       {scoreboard && <Scoreboard toggleScoreboard={toggleScoreboard} startGame={startGame} scores={scores} gameState={gameState} clearScores={clearScores}/>}
       {settings && <Settings toggleModal={toggleSettings} presets={presets} adjustSettings={adjustSettings}/>}
       <div className='content'>
