@@ -59,10 +59,13 @@ function App() {
   // State 6: User is trying to guesss
   const [targetWord, setTargetWord] = useState("");
   // State 7: Words array the user has guessed
-  const [guessHistory, setGuessHistory] = useState([]);
+  const [guessHistory, setGuessHistory] = useState(["","","","","",""]);
   // State 8: Current user guess
   const [userInput, setUserInput] = useState("");
-
+  // State 9: Current index in guessHistory to modify
+  const [currentIndex, setCurrentIndex] = useState(0);
+  // State 10: Assigns each tile a color depending on guess/target word
+  const [colors, setColors] = useState([[],[],[],[],[],[]]);
 
   // General hook: start the game on page load
   useEffect(() => {
@@ -76,20 +79,15 @@ function App() {
     }
   }, []);
 
-  // GuessHistory hook: sets game state
   useEffect(() => {
-    if (guessHistory.length > 0) {
-      // sets to loss
-      if (guessHistory.length === 6) {
-        setGameState("loss");
+    setGuessHistory(guessHistory.map((word, index) => {
+      if (index === currentIndex) {
+        return userInput;
+      } else {
+        return word;
       }
-      // sets to win
-      // There is an edgecase where the user guesses the word on the final try and both these statements are true
-      if (guessHistory.includes(targetWord)) {
-        setGameState("win");
-      }
-    }
-  }, [guessHistory]);
+    }));
+  }, [userInput]);
 
   useEffect(() => {
     if (gameState === "loss" || gameState === "win") {
@@ -116,12 +114,31 @@ function App() {
       document.getElementById('body').classList.remove('contrast');
     }
     localStorage.setItem("settings", JSON.stringify(presets));
-  }, [presets])
+  }, [presets]);
+
+  useEffect(() => {
+    if (currentIndex > 0) {
+      if (guessHistory[currentIndex - 1] === targetWord) {
+        setGameState("win");
+      } else if (currentIndex >= 6) {
+        setGameState("loss");
+      }
+    }
+  }, [currentIndex]);
+
+  useEffect(() => {
+    if (scoreboard || settings) {
+      window.removeEventListener('keyup', handleKeyPress);
+    } else if (!scoreboard && !settings) {
+      window.addEventListener('keyup', handleKeyPress);
+    }
+  }, [scoreboard, settings]);
 
   const startGame = () => {
     // Select Word
     setGuessHistory([]);
     setUserInput("")
+    setCurrentIndex(0);
     setGameState("active");
     const wordIndex = Math.floor(Math.random() * wordBank.length);
     setTargetWord(wordBank[wordIndex]);
@@ -164,19 +181,41 @@ function App() {
     } else if (!wordBank.includes(word)) {
       console.log("NOT VALID WORD");
       return false;
-    } else if (guessHistory.includes(word)) {
-      console.log("WORD ALREADY GUESSED");
-      return false
     } else {
-      return true;
+      for (let i = 0; i < currentIndex; i++) {
+        if (guessHistory[i] === word) {
+          return false;
+        }
+      }
+      return true
     }
   }
 
   const submitGuess = () => {
-    console.log(userInput);
     if (checkGuess(userInput)) {
-      setGuessHistory((guessHistory) => [...guessHistory, userInput]);
+      /*
+      step 1 find the word in guess history. We determine colors from this
+      step 2 map based on word in guess history comparing to target word creating new array
+      step 3 map function colors the right guess colors aray
+      */
+      const color = [...userInput].map((char, index) => {
+        if (char === targetWord[index]) {
+          return "g";
+        } else if (targetWord.includes(char)) {
+          return "y";
+        } else {
+          return "w";
+        }
+      });
+      setColors(colors.map((curr, index) => {
+        if (index === currentIndex) {
+          return color;
+        } else {
+          return curr;
+        }
+      }));
       setUserInput("");
+      setCurrentIndex((preIndex) => preIndex + 1);
     }
   }
 
@@ -269,15 +308,9 @@ function App() {
       {settings && <Settings toggleModal={toggleSettings} presets={presets} adjustSettings={adjustSettings}/>}
       <div className='content'>
         <div className="history-box">
-          <Guess word={guessHistory[0]} targetWord={targetWord}/>
-          <Guess word={guessHistory[1]} targetWord={targetWord}/>
-          <Guess word={guessHistory[2]} targetWord={targetWord}/>
-          <Guess word={guessHistory[3]} targetWord={targetWord}/>
-          <Guess word={guessHistory[4]} targetWord={targetWord}/>
-          <Guess word={guessHistory[5]} targetWord={targetWord}/>
-        </div>
-        <div className="ui text-black dark:text-white">
-          {userInput}
+          {guessHistory.map((word, index) => {
+            return <Guess word={word} key={index} colors={colors[index]}/>
+          })}
         </div>
         <Keyboard addChar={addCharUserInput} backspace={removeLastCharUserInput} submit={submitGuess}/>
       </div>
