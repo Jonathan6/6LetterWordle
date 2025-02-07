@@ -28,8 +28,10 @@
 <details>
 <summary>Click to Reveal</summary>
 
-[![Screenshot of 6 Letter Wordle Application](public\SixLetterWordlePreview.jpg)](https://jonathan6.github.io/6LetterWordle/)
+[![Screenshot of 6 Letter Wordle Application](./public/SixLetterWordlePreview.jpg)](https://jonathan6.github.io/6LetterWordle/)
+
 Click the preview to be redirected to the website!
+
 </details>
 
 
@@ -41,10 +43,10 @@ This project was designed to enhance React state management, improve component-b
 ## Features
 
 ✅ Dynamic Game Board: A responsive UI that displays user input, validates guesses, and provides feedback.
-✅ Keyboard Input Handling: Users can type guesses using an on-screen or physical keyboard.
-✅ State Management: React hooks (useState) manage user input, game logic, and UI updates.
-✅ Fast Build and Hot Reloading: Uses Vite for quick development cycles.
-✅ Optimized Performance: Minimal re-renders and efficient state updates.
+<br /> ✅ Keyboard Input Handling: Users can type guesses using an on-screen or physical keyboard.
+<br /> ✅ State Management: React hooks (useState) manage user input, game logic, and UI updates.
+<br /> ✅ Fast Build and Hot Reloading: Uses Vite for quick development cycles.
+<br /> ✅ Optimized Performance: Minimal re-renders and efficient state updates.
 
 ## Word Data Source & Processing
 
