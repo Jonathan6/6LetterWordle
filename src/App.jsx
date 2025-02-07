@@ -136,7 +136,7 @@ function App() {
 
   const startGame = () => {
     // Select Word
-    setGuessHistory([]);
+    setGuessHistory(["","","","","",""]);
     setUserInput("")
     setCurrentIndex(0);
     setGameState("active");
@@ -307,14 +307,13 @@ function App() {
       {scoreboard && <Scoreboard toggleScoreboard={toggleScoreboard} startGame={startGame} scores={scores} gameState={gameState} clearScores={clearScores}/>}
       {settings && <Settings toggleModal={toggleSettings} presets={presets} adjustSettings={adjustSettings}/>}
       <div className='content'>
-        <div className="history-box">
+        <div className="history-box p-[20px]">
           {guessHistory.map((word, index) => {
             return <Guess word={word} key={index} colors={colors[index]}/>
           })}
         </div>
         <Keyboard addChar={addCharUserInput} backspace={removeLastCharUserInput} submit={submitGuess}/>
       </div>
-      
     </>
   )
 }

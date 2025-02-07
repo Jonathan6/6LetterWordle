@@ -12,6 +12,7 @@
   - [6 Letter Wordle Preview](#6-letter-wordle-preview)
   - [Overview](#overview)
   - [Features](#features)
+  - [Word Data Source \& Processing](#word-data-source--processing)
   - [Technologies Used](#technologies-used)
     - [React](#react)
     - [Vite](#vite)
@@ -27,7 +28,7 @@
 <details>
 <summary>Click to Reveal</summary>
 
-[![Screenshot of 6 Letter Wordle Application](\public\SixLetterWordlePreview.jpg)](https://jonathan6.github.io/6LetterWordle/)
+[![Screenshot of 6 Letter Wordle Application](public\SixLetterWordlePreview.jpg)](https://jonathan6.github.io/6LetterWordle/)
 Click the preview to be redirected to the website!
 </details>
 
@@ -45,6 +46,13 @@ This project was designed to enhance React state management, improve component-b
 ✅ Fast Build and Hot Reloading: Uses Vite for quick development cycles.
 ✅ Optimized Performance: Minimal re-renders and efficient state updates.
 
+## Word Data Source & Processing
+
+The word list used in this project was gathered from [word.tips](https://word.tips/) and is primarily designed for online word games like Words with Friends and Scrabble. Each word is associated with a point value based on its game scoring system.
+
+To efficiently store and process the words, I used a script to extract the first six characters of each entry, convert them to uppercase, enclose them in quotes, and separate them with a space and comma. This formatting allowed for seamless integration into a JavaScript file.
+
+Initially, I planned to validate user input through an online API. However, most free APIs for this purpose had slow response times, disrupting gameplay. By embedding the word list directly, the project ensures faster and more reliable word validation.
 
 ## Technologies Used
 
@@ -87,15 +95,10 @@ npm install
 npm run dev  
 ```
 
-4. Open in the browser:
-The application will be available at http://localhost:5173/ (or a similar port).
-
-
 ## Future Improvements
 🔹 User Authentication: Implement login functionality to track user stats.
-🔹 Leaderboard: Display global or local leaderboards.
+🔹 Leaderboard: Display local leaderboards.
 🔹 Mobile Optimizations: Improve UI/UX for smaller screens.
-🔹 Expanded Word Bank: Dynamically fetch words to keep the game fresh.
 
 
 ## Conclusion

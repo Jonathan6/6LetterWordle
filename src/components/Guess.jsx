@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react'
 const Guess = (props) => {
     const [wordArray, setWordArray] = useState([" ", " ", " ", " ", " ", " "]);
     
+    const css = " character-box font-bold size-15 mx-px";
+
     useEffect(() => {
         setWordArray(wordArray.map((char, index) => {
             if (index < props.word.length) {
@@ -15,7 +17,7 @@ const Guess = (props) => {
     }, [props.word]);
 
     return (
-        <div className="guess-box">
+        <div className="guess-box my-[2px]">
             {wordArray.map((char, index) => {
                 var color = "";
                 if (props.colors.length === 6) {
@@ -26,9 +28,9 @@ const Guess = (props) => {
                     } else {
                         color = "bg-green contrast:bg-orange-500 contrast:text-black";
                     }
-                    return (<h2 key={index} className={"character-box text-white " + color}>{char}</h2>);
+                    return (<h2 key={index} className={"text-white " + color + css}>{char}</h2>);
                 } else {
-                    return (<h2 key={index} className={"character-box text-black bg-white dark:text-white dark:bg-black"}>{char}</h2>);
+                    return (<h2 key={index} className={"border-2 border-gray-200 text-black bg-white dark:border-stone-600 dark:text-white dark:bg-black" + css}>{char}</h2>);
                 }
             })}
         </div>

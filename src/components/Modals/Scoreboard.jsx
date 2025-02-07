@@ -15,7 +15,6 @@ const Scoreboard = (props) => {
     }
     
     const playAgain = () => {
-        console.log("play again");
         props.toggleScoreboard();
         props.startGame();
     }

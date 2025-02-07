@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 
 const Key = (props) => {
-    const css = 'key text-black dark:text-white ' + props.char
+    const css = 'key rounded-sm bg-gray-300 text-black dark:text-white dark:bg-neutral-400 ' + props.char
 
     if (/^[a-zA-Z]$/.test(props.char)) {
         return (
