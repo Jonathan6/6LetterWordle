@@ -4,6 +4,43 @@
 
 @custom-variant contrast (&:where(.contrast, .contrast *));
 
+@keyframes flip {
+  0% {
+    transform: rotateY(0deg);
+  }
+  50% {
+    transform: rotateY(90deg);
+  }
+  100% {
+    transform: rotateY(0deg);
+  }
+}
+
+/* Flip animation with delay */
+.flip-delay-0 {
+  animation: flip 0.5s ease-in-out .25s;
+}
+
+.flip-delay-1 {
+  animation: flip 0.5s ease-in-out 1.25s;
+}
+
+.flip-delay-2 {
+  animation: flip 0.5s ease-in-out 2.25s;
+}
+
+.flip-delay-3 {
+  animation: flip 0.5s ease-in-out 3.25s;
+}
+
+.flip-delay-4 {
+  animation: flip 0.5s ease-in-out 4.25s;
+}
+
+.flip-delay-5 {
+  animation: flip 0.5s ease-in-out 5.25s;
+}
+
 @theme {
   --color-grey: #3A3A3C;
   --color-black: #0a0a0a;
@@ -52,7 +89,6 @@
   justify-content: center; /* Horizontally center the text */
   /* border: 2px solid rgb(60, 60, 60); /* Optional: Border for visual clarity */
   font-size: 24px; /* Font size for the characters */
-  text-transform: uppercase; /* Ensure all characters are uppercase */
 }
 
 .ui {

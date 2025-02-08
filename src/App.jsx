@@ -91,7 +91,9 @@ function App() {
 
   useEffect(() => {
     if (gameState === "loss" || gameState === "win") {
-      finishGame()
+      setTimeout(() => {
+        finishGame()
+      }, 7000);
     }
   }, [gameState]);
 
@@ -127,16 +129,19 @@ function App() {
   }, [currentIndex]);
 
   useEffect(() => {
-    if (scoreboard || settings) {
-      window.removeEventListener('keyup', handleKeyPress);
-    } else if (!scoreboard && !settings) {
-      window.addEventListener('keyup', handleKeyPress);
-    }
+    // bugged
+    // if (scoreboard || settings) {
+    //   window.removeEventListener('keyup', handleKeyPress);
+    // } else if (!scoreboard && !settings) {
+    //   window.addEventListener('keyup', handleKeyPress);
+    // }
+
   }, [scoreboard, settings]);
 
   const startGame = () => {
     // Select Word
     setGuessHistory(["","","","","",""]);
+    setColors([[],[],[],[],[],[]]);
     setUserInput("")
     setCurrentIndex(0);
     setGameState("active");
@@ -148,7 +153,7 @@ function App() {
   const finishGame = () => {
     if (gameState == "win") {
       // win
-      addScore(guessHistory.length);
+      addScore(currentIndex);
     } else {
       // loss
       addScore(0)
@@ -214,6 +219,7 @@ function App() {
           return curr;
         }
       }));
+
       setUserInput("");
       setCurrentIndex((preIndex) => preIndex + 1);
     }
