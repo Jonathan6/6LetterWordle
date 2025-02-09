@@ -35,7 +35,8 @@ const Guess = (props) => {
             setTimeout(() => {
                 setAnimate(false);
             }, 7000);
-            
+        } else {
+            setClassName(Array(6).fill(blank));
         }
     }, [props.colors]);
 

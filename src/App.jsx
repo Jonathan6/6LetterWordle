@@ -7,6 +7,7 @@ import { Keyboard } from './components/Keyboard';
 import { Scoreboard } from './components/Modals/Scoreboard';
 import { Settings } from './components/Modals/Settings';
 import { Navbar } from './components/Navbar';
+import { Alert } from './components/Alert';
 
 
 function App() {
@@ -67,6 +68,11 @@ function App() {
   // State 10: Assigns each tile a color depending on guess/target word
   const [colors, setColors] = useState([[],[],[],[],[],[]]);
 
+  // State 11: Shows Alert
+  const [alertVisible, setAlertVisible] = useState(false);
+  // State 12: Alert text
+  const[alertText, setAlertText] = useState("");
+
   // General hook: start the game on page load
   useEffect(() => {
     window.addEventListener('keyup', handleKeyPress);
@@ -90,9 +96,22 @@ function App() {
   }, [userInput]);
 
   useEffect(() => {
-    if (gameState === "loss" || gameState === "win") {
+    if (gameState === "win") {
+      // win
+      addScore(currentIndex);
       setTimeout(() => {
-        finishGame()
+        sendAlert("Wonderful!");
+      }, 6000);
+      setTimeout(() => {
+        toggleScoreboard()
+      }, 7000);
+    } else if (gameState === "loss") {
+      addScore(0)
+      setTimeout(() => {
+        sendAlert("Maybe Next Time");
+      }, 6000);
+      setTimeout(() => {
+        toggleScoreboard()
       }, 7000);
     }
   }, [gameState]);
@@ -151,20 +170,14 @@ function App() {
   }
 
   const finishGame = () => {
-    if (gameState == "win") {
-      // win
-      addScore(currentIndex);
-    } else {
-      // loss
-      addScore(0)
-    }
-    toggleScoreboard();
+    
   }
 
   const addCharUserInput = (char) => {
     if (userInput.length < 6) {
       setUserInput(prevUserInput => prevUserInput + char);
     } else {
+      sendAlert("Too Long");
       console.log("too long!");
       console.log(userInput);
     }
@@ -181,9 +194,11 @@ function App() {
 
   const checkGuess = (word) => {
     if (word.length !== 6) {
+      sendAlert("Wrong Length");
       console.log("WRONG LENGTH");
       return false;
     } else if (!wordBank.includes(word)) {
+      sendAlert("Not a Valid Word");
       console.log("NOT VALID WORD");
       return false;
     } else {
@@ -307,11 +322,17 @@ function App() {
     ]);
   }
 
+  const sendAlert = (message) => {
+    setAlertText(message);
+    setAlertVisible(true);
+  }
+
   return (
     <>
       <Navbar toggleScoreboard={toggleScoreboard} toggleSettings={toggleSettings}></Navbar>
       {scoreboard && <Scoreboard toggleScoreboard={toggleScoreboard} startGame={startGame} scores={scores} gameState={gameState} clearScores={clearScores}/>}
       {settings && <Settings toggleModal={toggleSettings} presets={presets} adjustSettings={adjustSettings}/>}
+      {alertVisible && <Alert message={alertText} duration={1000} onClose={() => setAlertVisible(false)}></Alert>}
       <div className='content'>
         <div className="history-box p-[20px]">
           {guessHistory.map((word, index) => {
