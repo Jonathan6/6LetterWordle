@@ -9,15 +9,15 @@ const Scoreboard = (props) => {
     // 0 Index is reserved for when they were unable to guess the word
     
     // Clears localstorage and current leaderboard of all scores
-    const clearData = () => {
-        localStorage.clear();
-        props.clearScores();
-    }
+    // const clearData = () => {
+    //     localStorage.clear();
+    //     props.clearScores();
+    // }
     
-    const playAgain = () => {
-        props.toggleScoreboard();
-        props.startGame();
-    }
+    // const playAgain = () => {
+    //     props.toggleScoreboard();
+    //     props.startGame();
+    // }
 
     const content = 
         <div>
@@ -45,9 +45,9 @@ const Scoreboard = (props) => {
                     />
                 </BarChart>
             </ResponsiveContainer>
-            <button onClick={clearData}>Clear</button>
-            <button onClick={playAgain}>Play Again</button>
-            <button onClick={() => console.log(props.scores)}>test</button>
+            {/* <button onClick={clearData}>Clear</button> */}
+            {/* <button onClick={playAgain}>Play Again</button> */}
+            {/* <button onClick={() => console.log(props.scores)}>test</button> */}
         </div>
 
     return (

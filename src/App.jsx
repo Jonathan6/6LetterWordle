@@ -72,6 +72,8 @@ function App() {
   const [alertVisible, setAlertVisible] = useState(false);
   // State 12: Alert text
   const[alertText, setAlertText] = useState("");
+  // State 13: Today date, used to generate daily work and check to see if player has completed daily
+  const [date, setDate] = useState("");
 
   // General hook: start the game on page load
   useEffect(() => {
@@ -96,20 +98,18 @@ function App() {
   }, [userInput]);
 
   useEffect(() => {
-    if (gameState === "win") {
-      // win
-      addScore(currentIndex);
-      setTimeout(() => {
-        sendAlert("Wonderful!");
-      }, 6000);
-      setTimeout(() => {
-        toggleScoreboard()
-      }, 7000);
-    } else if (gameState === "loss") {
-      addScore(0)
-      setTimeout(() => {
-        sendAlert("Maybe Next Time");
-      }, 6000);
+    if (gameState === "win" || gameState === "loss") {
+      if (gameState === "win") {
+        addScore(currentIndex);
+        setTimeout(() => {
+          sendAlert("Wonderful!");
+        }, 6000);
+      } else if (gameState === "loss") {
+        addScore(0)
+        setTimeout(() => {
+          sendAlert("Maybe Next Time");
+        }, 6000);
+      }
       setTimeout(() => {
         toggleScoreboard()
       }, 7000);
@@ -154,24 +154,62 @@ function App() {
     // } else if (!scoreboard && !settings) {
     //   window.addEventListener('keyup', handleKeyPress);
     // }
-
   }, [scoreboard, settings]);
 
   const startGame = () => {
-    // Select Word
-    setGuessHistory(["","","","","",""]);
-    setColors([[],[],[],[],[],[]]);
-    setUserInput("")
-    setCurrentIndex(0);
-    setGameState("active");
-    const wordIndex = Math.floor(Math.random() * wordBank.length);
-    setTargetWord(wordBank[wordIndex]);
-    console.log(wordBank[wordIndex]);
+    const savedDate = localStorage.getItem("savedDate");
+    const date = new Date().toISOString().split("T")[0]; // "YYYY-MM-DD"
+    if (date != savedDate) {
+      setGuessHistory(["","","","","",""]);
+      setColors([[],[],[],[],[],[]]);
+      setUserInput("")
+      setCurrentIndex(0);
+      setGameState("active");
+      // const wordIndex = Math.floor(Math.random() * wordBank.length);
+      setTargetWord(getDailyWord(date));
+      setDate(date);
+      saveState();
+    } else {
+      setState();
+    }
   }
 
-  const finishGame = () => {
-    
+  const setState = () => {
+    // setGameState(localStorage.getItem("savedGameState"));
+    // setTargetWord(localStorage.getItem("savedTargetWord"));
+    // setGuessHistory(JSON.parse(localStorage.getItem("savedGuessHistory")));
+    // setCurrentIndex(localStorage.getItem("savedCurrentIndex"));
+    // setColors(JSON.parse(localStorage.getItem("savedColors")));
   }
+
+  const saveState = () => {
+    // localStorage.setItem("savedGameState", gameState);
+    // localStorage.setItem("savedTargetWord", targetWord);
+    // localStorage.setItem("savedGuessHistory", JSON.stringify(guessHistory));
+    // localStorage.setItem("savedCurrentIndex", currentIndex);
+    // localStorage.setItem("savedColors", JSON.stringify(colors));
+    // localStorage.setItem("savedDate", date);
+  }
+
+  const getDailyWord = (date) => {
+    // Simple hash using bitwise operations
+    const year = parseInt(date.substring(0,4));
+    const month = parseInt(date.substring(5,7));
+    const day = parseInt(date.substring(8));
+    console.log(`year:${year} month:${month} day:${day} date:${date}`);
+
+    const prime1 = 31;
+    const prime2 = 37;
+    const prime3 = 41;
+
+    let hash = (year * prime3) ^ (month * prime2) ^ (day * prime1);
+    hash = (hash << 5) - hash; // Bitwise shift for extra randomness
+
+    console.log(wordBank[Math.abs(hash) % wordBank.length]);
+    
+    // Use modulo to keep within word bank range
+    return wordBank[Math.abs(hash) % wordBank.length];
+}
 
   const addCharUserInput = (char) => {
     if (userInput.length < 6) {
@@ -237,6 +275,7 @@ function App() {
 
       setUserInput("");
       setCurrentIndex((preIndex) => preIndex + 1);
+      saveState();
     }
   }
 
