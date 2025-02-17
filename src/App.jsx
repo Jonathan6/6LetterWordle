@@ -112,6 +112,7 @@ function App() {
       }
       setTimeout(() => {
         toggleScoreboard()
+        saveState();
       }, 7000);
     }
   }, [gameState]);
@@ -165,30 +166,24 @@ function App() {
       setUserInput("")
       setCurrentIndex(0);
       setGameState("active");
-      // const wordIndex = Math.floor(Math.random() * wordBank.length);
       setTargetWord(getDailyWord(date));
       setDate(date);
-      saveState();
     } else {
       setState();
     }
   }
 
   const setState = () => {
-    // setGameState(localStorage.getItem("savedGameState"));
-    // setTargetWord(localStorage.getItem("savedTargetWord"));
-    // setGuessHistory(JSON.parse(localStorage.getItem("savedGuessHistory")));
-    // setCurrentIndex(localStorage.getItem("savedCurrentIndex"));
-    // setColors(JSON.parse(localStorage.getItem("savedColors")));
+    setGuessHistory(JSON.parse(localStorage.getItem("savedGuessHistory")));
+    setCurrentIndex(localStorage.getItem("savedCurrentIndex"));
+    setColors(JSON.parse(localStorage.getItem("savedColors")));
   }
 
   const saveState = () => {
-    // localStorage.setItem("savedGameState", gameState);
-    // localStorage.setItem("savedTargetWord", targetWord);
-    // localStorage.setItem("savedGuessHistory", JSON.stringify(guessHistory));
-    // localStorage.setItem("savedCurrentIndex", currentIndex);
-    // localStorage.setItem("savedColors", JSON.stringify(colors));
-    // localStorage.setItem("savedDate", date);
+    localStorage.setItem("savedGuessHistory", JSON.stringify(guessHistory));
+    localStorage.setItem("savedCurrentIndex", currentIndex);
+    localStorage.setItem("savedColors", JSON.stringify(colors));
+    localStorage.setItem("savedDate", date);
   }
 
   const getDailyWord = (date) => {
@@ -216,28 +211,21 @@ function App() {
       setUserInput(prevUserInput => prevUserInput + char);
     } else {
       sendAlert("Too Long");
-      console.log("too long!");
-      console.log(userInput);
     }
   }
 
   const removeLastCharUserInput = () => {
     if (userInput.length > 0) {
       setUserInput(prevUserInput => prevUserInput.slice(0,-1));
-    } else {
-      console.log("too short!");
-      console.log(userInput);
     }
   }
 
   const checkGuess = (word) => {
     if (word.length !== 6) {
       sendAlert("Wrong Length");
-      console.log("WRONG LENGTH");
       return false;
     } else if (!wordBank.includes(word)) {
       sendAlert("Not a Valid Word");
-      console.log("NOT VALID WORD");
       return false;
     } else {
       for (let i = 0; i < currentIndex; i++) {
@@ -249,8 +237,8 @@ function App() {
     }
   }
 
-  const submitGuess = () => {
-    if (checkGuess(userInput)) {
+  const submitGuess = (word) => {
+    if (checkGuess(word)) {
       /*
       step 1 find the word in guess history. We determine colors from this
       step 2 map based on word in guess history comparing to target word creating new array
@@ -275,18 +263,18 @@ function App() {
 
       setUserInput("");
       setCurrentIndex((preIndex) => preIndex + 1);
-      saveState();
     }
   }
 
   const handleKeyPress = (event) => {
     const key = event.key.toUpperCase();
+    console.log(key);
     if (key.length === 1 && /^[a-zA-Z]$/.test(key)) {
       addCharUserInput(key);
     } else if (key === "BACKSPACE") {
-      removeLastCharUserInput();
+      setUserInput(prevUserInput => prevUserInput.slice(0,-1));
     } else if (key === "ENTER") {
-      submitGuess();
+      submitGuess(userInput);
     }
   }
 
@@ -378,7 +366,7 @@ function App() {
             return <Guess word={word} key={index} colors={colors[index]}/>
           })}
         </div>
-        <Keyboard addChar={addCharUserInput} backspace={removeLastCharUserInput} submit={submitGuess}/>
+        <Keyboard addChar={addCharUserInput} backspace={removeLastCharUserInput} submit={submitGuess} userInput={userInput}/>
       </div>
     </>
   )

@@ -25,7 +25,7 @@ const Keyboard = (props) => {
         <div className='row row_three'>
         {rowThree.map((char, key) => {
           return (
-              <Key key={key} addChar={props.addChar} backspace={props.backspace} submit={props.submit} char={char}/>
+              <Key key={key} addChar={props.addChar} backspace={props.backspace} submit={props.submit} char={char} userInput={props.userInput}/>
           )
           })}
         </div>
@@ -36,7 +36,8 @@ const Keyboard = (props) => {
 Keyboard.propTypes = {
   addChar: PropTypes.func,
   backspace: PropTypes.func,
-  submit: PropTypes.func
+  submit: PropTypes.func,
+  userInput: PropTypes.string
 }
 
 export { Keyboard };

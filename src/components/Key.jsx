@@ -13,7 +13,7 @@ const Key = (props) => {
         );
     } else if (props.char === "ENTER") {
         return (
-            <button className={css} onClick={() => props.submit()}>{props.char}</button>
+            <button className={css} onClick={() => props.submit(props.userInput)}>{props.char}</button>
         );
     }
 }
@@ -22,7 +22,8 @@ Key.propTypes = {
     addChar: PropTypes.func,
     backspace: PropTypes.func,
     submit: PropTypes.func,
-    char: PropTypes.string
+    char: PropTypes.string,
+    userInput: PropTypes.string,
 }
 
 export { Key };
